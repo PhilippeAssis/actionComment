@@ -1,0 +1,19 @@
+{
+  "name": "action-comment",
+  "version": "0.0.1",
+  "description": "Matipulate files, text or scripts, enabling the modification of pre-defined blocks with intelligent comments.",
+  "main": "src/actionComment.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PhilippeAssis/actionComment.git"
+  },
+  "author": "Philippe Assis <assis@philippeassis.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/PhilippeAssis/actionComment/issues"
+  },
+  "homepage": "https://github.com/PhilippeAssis/actionComment#readme"
+}
