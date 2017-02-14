@@ -1,6 +1,9 @@
 const actionComment = require("../src/actionComment")()
+const fs = require("fs")
 
-var fileTest = actionComment.path("./fileTest.js").handles({
+var file = fs.readFileSync("./fileTest.js").toString()
+
+var fileTest = actionComment.string(file).handles({
     custom(line, index){
         return `//${line}`
     },
