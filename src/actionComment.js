@@ -112,6 +112,7 @@ var actionComment = function(config = {}) {
                 return line;
             })
             .filter((line) => {
+                line = line.toString()
                 return !(line && line.indexOf(`${commentTag}removeThisLine`) == 0)
             })
             .join("\n")

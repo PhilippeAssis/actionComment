@@ -1,19 +1,23 @@
 const actionComment = require("../src/actionComment")()
 const fs = require("fs")
+const flags = require("simple-flags")
 
-var file = fs.readFileSync("./fileTest.js").toString()
 
-var fileTest = actionComment.string(file).handles({
-    custom(line, index){
-        return `//${line}`
+var handlesIos = {
+        onlyIos(line, index) {
+            return `${line.replace(/!/g,"?")}`
+        }
     },
-    changeComment(line, index){
-        return line.replace("/*","****").replace("*/","****").trim()
+    handlesAndroid = {
+        onlyAndroid(line, index) {
+            return parseInt(line) + 3
+        }
     }
-}).exec()
+
+console.log(flags)
+
+
+
+var fileTest = actionComment.path("./fileTest.js").handles().exec()
 
 console.log(fileTest)
-
-//!changeComment
-/* Isso foi importado! */
-//!changeComment:end
