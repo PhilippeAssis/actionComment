@@ -1,6 +1,6 @@
 const actionComment = require("../src/actionComment")()
 
-var fileTest = actionComment.file("./fileTest.js").handles({
+var fileTest = actionComment.path("./fileTest.js").handles({
     custom(line, index){
         return `//${line}`
     },

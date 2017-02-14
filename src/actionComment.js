@@ -6,14 +6,20 @@ var actionComment = function(config = {}) {
     var commentTag = config.tag || "//!",
         curHandle;
 
+    this._filePath = null;
+
+    this._fileBuffer = null;
+    
+    this._fileString = null;
+
     this._localHandles = {
         "includeNodeModule": (line, index) => {
             if (line.indexOf("require") > -1) {
                 var importHandles = this._localHandles
                 var include = /\(([^)]+)\)/.exec(line)[1].replace('./', '').replace(/'/g, "").replace(/"/g, "")
                 include = path.resolve(process.cwd(), include)
-                
-                return `var ${actionComment(config).file(include)._importHandles(importHandles).exec()};`
+
+                return `var ${actionComment(config).path(include)._importHandles(importHandles).exec()};`
             }
         },
         "clear": (line, index) => {
@@ -23,13 +29,11 @@ var actionComment = function(config = {}) {
             return `${commentTag}removeThisLine`
         }
     }
-    
+
     this._importHandles = (handles) => {
         this._localHandles = handles;
         return this;
     }
-
-    this.filePath = config.file || null
 
     this.handles = (handles) => {
         for (let key in handles) {
@@ -38,22 +42,41 @@ var actionComment = function(config = {}) {
 
         return this;
     }
+    
+    this.string = (file) => {
+        this._fileString = file;
 
-    this.file = (filePath) => {
-        this.filePath = filePath
+        return this;
+    }
+    
+    this.path = (file) => {
+        this._filePath = file;
+
+        return this;
+    }
+
+    this.buffer = (buffer) => {
+        this._fileBuffer = buffer;
+
         return this;
     }
 
     this.exec = () => {
-        if (!this.filePath) {
-            console.error("actionComment:", "File path not defined.")
-            return
-        }
+        var file;
         
+        if (this._filePath) {
+            file = fs.readFileSync(this._filePath).toString()
+        }
+        else if (this._fileBuffer) {
+            file = this._fileBuffer.toString()
+        }
+        else if (this._fileString) {
+            file = this._fileString;
+        }
+
         var _this = this;
 
-        return fs.readFileSync(this.filePath)
-            .toString()
+        return file
             .split("\n")
             .map((line, index) => {
                 if (line.indexOf(commentTag) == 0) {

@@ -47,7 +47,7 @@ Execute `node test.js`
 ```javascript
 var const actionComment = require("../src/actionComment")()
 
-var fileTest = actionComment.file("./fileTest.js").handles({
+var fileTest = actionComment.path("./fileTest.js").handles({
     custom(line, index){
         return `//${line}`
     },
@@ -74,3 +74,15 @@ console.log(fileTest)
 ## Create handles
 
 To create a handler, pass an object with your desired `.handles(OBJECT)`
+
+## Set file
+You can set the file with
+ - Buffer: `.buffer(...)`
+ - Path: `.path(...)`
+ - String (file content): `.string(...)`
+
+## Comment tag
+By default the comment tag is `//!`, you can change it this way:
+```javascript
+var actionComment = require("action-comment")({"tag" : "#&!@"})
+```
