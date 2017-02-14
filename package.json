@@ -1,6 +1,6 @@
 {
   "name": "action-comment",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Matipulate files, text or scripts, enabling the modification of pre-defined blocks with intelligent comments.",
   "main": "src/actionComment.js",
   "scripts": {

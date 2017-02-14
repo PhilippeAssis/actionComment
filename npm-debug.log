@@ -1,0 +1,112 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/home/ubuntu/.nvm/versions/node/v7.5.0/bin/node',
+1 verbose cli   '/home/ubuntu/.nvm/versions/node/v7.5.0/bin/npm',
+1 verbose cli   'publish' ]
+2 info using npm@4.1.2
+3 info using node@v7.5.0
+4 verbose publish [ '.' ]
+5 silly cache add args [ '.', null ]
+6 verbose cache add spec .
+7 silly cache add parsed spec Result {
+7 silly cache add   raw: '.',
+7 silly cache add   scope: null,
+7 silly cache add   escapedName: null,
+7 silly cache add   name: null,
+7 silly cache add   rawSpec: '.',
+7 silly cache add   spec: '/home/ubuntu/workspace',
+7 silly cache add   type: 'directory' }
+8 verbose addLocalDirectory /home/ubuntu/.npm/action-comment/0.0.3/package.tgz not in flight; packing
+9 verbose correctMkdir /home/ubuntu/.npm correctMkdir not in flight; initializing
+10 info lifecycle action-comment@0.0.3~prepublish: action-comment@0.0.3
+11 silly lifecycle action-comment@0.0.3~prepublish: no script for prepublish, continuing
+12 info lifecycle action-comment@0.0.3~prepare: action-comment@0.0.3
+13 silly lifecycle action-comment@0.0.3~prepare: no script for prepare, continuing
+14 verbose tar pack [ '/home/ubuntu/.npm/action-comment/0.0.3/package.tgz',
+14 verbose tar pack   '/home/ubuntu/workspace' ]
+15 verbose tarball /home/ubuntu/.npm/action-comment/0.0.3/package.tgz
+16 verbose folder /home/ubuntu/workspace
+17 verbose addLocalTarball adding from inside cache /home/ubuntu/.npm/action-comment/0.0.3/package.tgz
+18 verbose correctMkdir /home/ubuntu/.npm correctMkdir not in flight; initializing
+19 silly cache afterAdd action-comment@0.0.3
+20 verbose afterAdd /home/ubuntu/.npm/action-comment/0.0.3/package/package.json not in flight; writing
+21 verbose correctMkdir /home/ubuntu/.npm correctMkdir not in flight; initializing
+22 verbose afterAdd /home/ubuntu/.npm/action-comment/0.0.3/package/package.json written
+23 silly publish { name: 'action-comment',
+23 silly publish   version: '0.0.3',
+23 silly publish   description: 'Matipulate files, text or scripts, enabling the modification of pre-defined blocks with intelligent comments.',
+23 silly publish   main: 'src/actionComment.js',
+23 silly publish   scripts: { test: 'echo "Error: no test specified" && exit 1' },
+23 silly publish   repository:
+23 silly publish    { type: 'git',
+23 silly publish      url: 'git+https://github.com/PhilippeAssis/actionComment.git' },
+23 silly publish   author: { name: 'Philippe Assis', email: 'assis@philippeassis.com' },
+23 silly publish   license: 'ISC',
+23 silly publish   bugs: { url: 'https://github.com/PhilippeAssis/actionComment/issues' },
+23 silly publish   homepage: 'https://github.com/PhilippeAssis/actionComment#readme',
+23 silly publish   readme: '# actionComment\nMatipulate files, text or scripts, enabling the modification of pre-defined blocks with intelligent comments.\n\n### Reason\nNeed a handler to modify scripts according to need, before running the build\n\n## Use\n#### test.js\n```javascript\nactionComment.file("./fileTest.js").handles({\n    custom(line, index){\n        return `//${line}`\n    },\n    changeComment(line, index){\n        return line.replace("/*","****").replace("*/","****").trim()\n    }\n}).exec()\n```\n\n#### fileTest.js\n```javascript\n//!clear\nThis line will be cleaned\n//!clear:end\n\n//!remove\nThese lines will be removed\nThese lines will be removed\nThese lines will be removed\nThese lines will be removed\nThese lines will be removed\n//!remove:end\n\n//!includeNodeModule\n// var async = require("./test.js")\n//!includeNodeModule:end\n\n//!custom\nIt\'s \ncustom\n!!!\n//!custom:end\n```\n\n#### Result\nExecute `node test.js`\n```javascript\nvar const actionComment = require("../src/actionComment")()\n\nvar fileTest = actionComment.path("./fileTest.js").handles({\n    custom(line, index){\n        return `//${line}`\n    },\n    changeComment(line, index){\n        return line.replace("/*","****").replace("*/","****").trim()\n    }\n}).exec()\n\nconsole.log(fileTest)\n\n**** Isso foi importado! ****;\n\n//It\'s \n//custom\n//!!!\n```\n\n\n## Handles included\n - includeNodeModule : Import a nodejs module by instantiating it into a variable.\n - clear: Clean a block \n - remove: Remove a block \n\n## Create handles\n\nTo create a handler, pass an object with your desired `.handles(OBJECT)`\n\n## Set file\nYou can set the file with\n - Buffer: `.buffer(...)`\n - Path: `.path(...)`\n - String (file content): `.string(...)`\n\n## Comment tag\nBy default the comment tag is `//!`, you can change it this way:\n```javascript\nvar actionComment = require("action-comment")({"tag" : "#&!@"})\n```',
+23 silly publish   readmeFilename: 'readme.md',
+23 silly publish   gitHead: '061dd299052d5ff82bfb62ee903eec1690688080',
+23 silly publish   _id: 'action-comment@0.0.3',
+23 silly publish   _shasum: '2cef67deb571111a22e68b745471452117d6fd5f',
+23 silly publish   _from: '.' }
+24 info lifecycle action-comment@0.0.3~prepublishOnly: action-comment@0.0.3
+25 silly lifecycle action-comment@0.0.3~prepublishOnly: no script for prepublishOnly, continuing
+26 verbose getPublishConfig undefined
+27 silly mapToRegistry name action-comment
+28 silly mapToRegistry using default registry
+29 silly mapToRegistry registry https://registry.npmjs.org/
+30 silly mapToRegistry data Result {
+30 silly mapToRegistry   raw: 'action-comment',
+30 silly mapToRegistry   scope: null,
+30 silly mapToRegistry   escapedName: 'action-comment',
+30 silly mapToRegistry   name: 'action-comment',
+30 silly mapToRegistry   rawSpec: '',
+30 silly mapToRegistry   spec: 'latest',
+30 silly mapToRegistry   type: 'tag' }
+31 silly mapToRegistry uri https://registry.npmjs.org/action-comment
+32 verbose publish registryBase https://registry.npmjs.org/
+33 silly publish uploading /home/ubuntu/.npm/action-comment/0.0.3/package.tgz
+34 verbose request uri https://registry.npmjs.org/action-comment
+35 verbose request sending authorization for write operation
+36 info attempt registry request try #1 at 3:47:21 PM
+37 verbose request using bearer token for auth
+38 verbose request id 7a23799ef3b8f5c2
+39 http request PUT https://registry.npmjs.org/action-comment
+40 http 403 https://registry.npmjs.org/action-comment
+41 verbose headers { 'content-type': 'application/json',
+41 verbose headers   'cache-control': 'max-age=300',
+41 verbose headers   'content-length': '95',
+41 verbose headers   'accept-ranges': 'bytes',
+41 verbose headers   date: 'Tue, 14 Feb 2017 15:47:21 GMT',
+41 verbose headers   via: '1.1 varnish',
+41 verbose headers   connection: 'keep-alive',
+41 verbose headers   'x-served-by': 'cache-ord1720-ORD',
+41 verbose headers   'x-cache': 'MISS',
+41 verbose headers   'x-cache-hits': '0',
+41 verbose headers   'x-timer': 'S1487087241.307077,VS0,VE547',
+41 verbose headers   vary: 'Accept-Encoding' }
+42 verbose request invalidating /home/ubuntu/.npm/registry.npmjs.org/action-comment on PUT
+43 error publish Failed PUT 403
+44 verbose stack Error: "You cannot publish over the previously published version 0.0.3." : action-comment
+44 verbose stack     at makeError (/home/ubuntu/.nvm/versions/node/v7.5.0/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:304:12)
+44 verbose stack     at CachingRegistryClient.<anonymous> (/home/ubuntu/.nvm/versions/node/v7.5.0/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:292:14)
+44 verbose stack     at Request._callback (/home/ubuntu/.nvm/versions/node/v7.5.0/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:212:14)
+44 verbose stack     at Request.self.callback (/home/ubuntu/.nvm/versions/node/v7.5.0/lib/node_modules/npm/node_modules/request/request.js:186:22)
+44 verbose stack     at emitTwo (events.js:106:13)
+44 verbose stack     at Request.emit (events.js:192:7)
+44 verbose stack     at Request.<anonymous> (/home/ubuntu/.nvm/versions/node/v7.5.0/lib/node_modules/npm/node_modules/request/request.js:1081:10)
+44 verbose stack     at emitOne (events.js:96:13)
+44 verbose stack     at Request.emit (events.js:189:7)
+44 verbose stack     at IncomingMessage.<anonymous> (/home/ubuntu/.nvm/versions/node/v7.5.0/lib/node_modules/npm/node_modules/request/request.js:1001:12)
+45 verbose statusCode 403
+46 verbose pkgid action-comment
+47 verbose cwd /home/ubuntu/workspace
+48 error Linux 4.8.2-c9
+49 error argv "/home/ubuntu/.nvm/versions/node/v7.5.0/bin/node" "/home/ubuntu/.nvm/versions/node/v7.5.0/bin/npm" "publish"
+50 error node v7.5.0
+51 error npm  v4.1.2
+52 error code E403
+53 error "You cannot publish over the previously published version 0.0.3." : action-comment
+54 error If you need help, you may report this error at:
+54 error     <https://github.com/npm/npm/issues>
+55 verbose exit [ 1, true ]
