@@ -1,18 +1,35 @@
+#!/usr/bin/env node
 const actionComment = require('../src/actionComment')
 const fs = require('fs')
 const path = require('path')
 const flags = require('simple-flags')
+const helperView = require('simple-flags/lib/helperView')
 
 async function main () {
-  const { handler, target, output, tag } = flags({
+  const params = {
     args: ['target'],
-    handler: null,
-    output: null,
-    tag: undefined
-  })
+    target: {
+      default: null,
+      description: 'Target file'
+    },
+    handler: {
+      default: null,
+      description: 'Handler file'
+    },
+    output: {
+      default: null,
+      description: 'Output file'
+    },
+    tag: {
+      default: undefined,
+      description: 'Tag type, default: #!'
+    }
+  }
+
+  const { handler, target, output, tag } = flags(params)
 
   if (target === undefined || handler === null || output === null) {
-    throw new Error('You need to pass target, handler file and output path.')
+    return helperView(params)
   }
 
   const handlerModule = require(path.resolve(process.cwd(), handler))

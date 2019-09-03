@@ -4,7 +4,7 @@
   "description": "Matipulate files, text or scripts, enabling the modification of pre-defined blocks with intelligent comments.",
   "main": "src/actionComment.js",
   "bin": {
-    "action-comment": "node ./bin/bin"
+    "action-comment": "./bin/bin.js"
   },
   "scripts": {
     "test": "mocha"
