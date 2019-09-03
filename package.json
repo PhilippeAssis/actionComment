@@ -1,10 +1,13 @@
 {
   "name": "action-comment",
-  "version": "0.0.4",
+  "version": "1.0.0",
   "description": "Matipulate files, text or scripts, enabling the modification of pre-defined blocks with intelligent comments.",
   "main": "src/actionComment.js",
+  "bin": {
+    "actioncomment": "node ./bin/bin"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
@@ -15,5 +18,18 @@
   "bugs": {
     "url": "https://github.com/PhilippeAssis/actionComment/issues"
   },
-  "homepage": "https://github.com/PhilippeAssis/actionComment#readme"
+  "homepage": "https://github.com/PhilippeAssis/actionComment#readme",
+  "devDependencies": {
+    "eslint": "^6.3.0",
+    "eslint-config-standard": "^14.1.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-mocha": "^6.1.0",
+    "eslint-plugin-node": "^9.2.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
+    "mocha": "^6.2.0"
+  },
+  "dependencies": {
+    "simple-flags": "^1.2.4"
+  }
 }

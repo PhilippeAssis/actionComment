@@ -1,1 +1,9 @@
 node_modules
+.eslintrc.yml
+.idea/.gitignore
+.idea/actionComment.iml
+.idea/inspectionProfiles/
+.idea/misc.xml
+.idea/modules.xml
+.idea/vcs.xml
+package-lock.json

@@ -1,126 +1,53 @@
-var fs = require("fs"),
-    path = require("path")
+async function actionComment (content, handlers, commentTag = '#!') {
+  let curHandler = null
 
-var actionComment = function(config = {}) {
+  const mapping = content
+    .split('\n')
+    .map(async (line, index) => {
+      const regTag = RegExp(`${commentTag}([a-zA-Z])+((:run)||(:start)||(:end))+`, 'g')
+      const command = line.match(regTag)
 
-    var commentTag = config.tag || "//!",
-        curHandle;
-
-    this._filePath = null;
-
-    this._fileBuffer = null;
-    
-    this._fileString = null;
-
-    this._localHandles = {
-        "includeNodeModule": (line, index) => {
-            if (line.indexOf("require") > -1) {
-                var importHandles = this._localHandles
-                var include = /\(([^)]+)\)/.exec(line)[1].replace('./', '').replace(/'/g, "").replace(/"/g, "")
-                include = path.resolve(process.cwd(), include)
-
-                return `var ${actionComment(config).path(include)._importHandles(importHandles).exec()};`
-            }
-        },
-        "clear": (line, index) => {
-            return ""
-        },
-        "remove": (line, index) => {
-            return `${commentTag}removeThisLine`
-        }
-    }
-
-    this._importHandles = (handles) => {
-        this._localHandles = handles;
-        return this;
-    }
-
-    this.handles = (handles) => {
-        for (let key in handles) {
-            this._localHandles[key] = handles[key];
+      if (command === null) {
+        if (curHandler) {
+          if (handlers[curHandler]) {
+            return await handlers[curHandler].call(this, line, index, this.position)
+          } else {
+            throw new Error(`${curHandler} handler not defined.`)
+          }
         }
 
-        return this;
-    }
-    
-    this.string = (file) => {
-        this._fileString = file;
+        return line
+      }
 
-        return this;
-    }
-    
-    this.path = (file) => {
-        this._filePath = file;
+      const commandSplit = command[0].split(':')
+      const commandName = commandSplit[0].replace(commentTag, '')
+      const commandAction = commandSplit[1] || 'run'
 
-        return this;
-    }
-
-    this.buffer = (buffer) => {
-        this._fileBuffer = buffer;
-
-        return this;
-    }
-
-    this.exec = () => {
-        var file;
-        
-        if (this._filePath) {
-            file = fs.readFileSync(this._filePath).toString()
+      if (commandAction === 'end') {
+        if (curHandler === commandName) {
+          curHandler = null
+          this.position = null
+        } else {
+          throw new Error(`Command ${commandName} can not be terminated because it has not been started.`)
         }
-        else if (this._fileBuffer) {
-            file = this._fileBuffer.toString()
-        }
-        else if (this._fileString) {
-            file = this._fileString;
-        }
+      } else if (commandAction === 'start') {
+        curHandler = commandName
+      } else if (commandAction === 'run') {
+        const resolve = await handlers[commandName].call(this, line, index, this.position)
+        return line.replace(command[0], resolve)
+      }
 
-        var _this = this;
+      // Delete a command line by default
+      return `${commentTag}removeLine:run`
+    })
 
-        return file
-            .split("\n")
-            .map((line, index) => {
-                if (line.indexOf(commentTag) == 0) {
-                    var command = line.slice(3).split(":"),
-                        commandName = command[0],
-                        commandAction = command[1] || "start";
+  const resolve = await Promise.all(mapping)
 
-                    if (commandAction == "end") {
-                        if (curHandle == commandName) {
-                            curHandle = null;
-                        }
-                        else {
-                            console.error("actionComment:", `Command ${commandName} can not be terminated because it has not been started.`)
-                        }
-                    }
-                    else if (commandAction == "start") {
-                        curHandle = commandName
-                    }
+  const result = resolve.filter((line) => {
+    return !(line && line.indexOf(`${commentTag}removeLine:run`) === 0)
+  })
 
-                    //Delete a command line by default
-                    return `${commentTag}removeThisLine`;
-                }
-
-                if (curHandle) {
-                    if (_this._localHandles[curHandle]) {
-                        return _this._localHandles[curHandle].call(_this, line, index)
-                    }
-
-                    console.error("actionComment:", `${curHandle} handler not defined.`)
-                }
-
-
-                return line;
-            })
-            .filter((line) => {
-                line = line.toString()
-                return !(line && line.indexOf(`${commentTag}removeThisLine`) == 0)
-            })
-            .join("\n")
-    }
-
-    return this;
-
+  return result.join('\n')
 }
-
 
 module.exports = actionComment

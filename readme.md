@@ -4,85 +4,76 @@ Matipulate files, text or scripts, enabling the modification of pre-defined bloc
 ### Reason
 Need a handler to modify scripts according to need, before running the build
 
-## Use
-#### test.js
+
 ```javascript
-actionComment.file("./fileTest.js").handles({
-    custom(line, index){
-        return `//${line}`
-    },
-    changeComment(line, index){
-        return line.replace("/*","****").replace("*/","****").trim()
-    }
-}).exec()
+actionComment(content || String, handlers || Object{Function}, commentTag = '#!')
 ```
 
-#### fileTest.js
+## Use
+#### myFile.txt
+```yml
+#!addName:start
+My name is #name,
+your name
+is #name too.
+#!addName:end
+
+My name is Jack,
+your name
+is #!insertName too.
+```
+
+#### example.js
 ```javascript
-//!clear
-This line will be cleaned
-//!clear:end
-
-//!remove
-These lines will be removed
-These lines will be removed
-These lines will be removed
-These lines will be removed
-These lines will be removed
-//!remove:end
-
-//!includeNodeModule
-// var async = require("./test.js")
-//!includeNodeModule:end
-
-//!custom
-It's 
-custom
-!!!
-//!custom:end
+actionComment(
+    fs.readFileSync('myFile.txt').toString(), 
+    {
+      insertName(){
+          return `Jack`
+      },
+      addName(line){
+          return line.replace('#name', 'Martin')
+      }
+    }, 
+    '#!'
+)
 ```
 
 #### Result
-Execute `node test.js`
-```javascript
-var const actionComment = require("../src/actionComment")()
+```text
+My name is Martin,
+your name
+is Martin too.
 
-var fileTest = actionComment.path("./fileTest.js").handles({
-    custom(line, index){
-        return `//${line}`
-    },
-    changeComment(line, index){
-        return line.replace("/*","****").replace("*/","****").trim()
-    }
-}).exec()
-
-console.log(fileTest)
-
-**** Isso foi importado! ****;
-
-//It's 
-//custom
-//!!!
+My name is Jack,
+your name
+is Jack too.
 ```
-
-
-## Handles included
- - includeNodeModule : Import a nodejs module by instantiating it into a variable.
- - clear: Clean a block 
- - remove: Remove a block 
 
 ## Create handles
+Handlers receive the following parameters:
+ - content: `String`
+ - line: `Int` line number
+ - position: `array`: [init position, end position] 
 
-To create a handler, pass an object with your desired `.handles(OBJECT)`
+They may return a promise
 
-## Set file
-You can set the file with
- - Buffer: `.buffer(...)`
- - Path: `.path(...)`
- - String (file content): `.string(...)`
-
-## Comment tag
-By default the comment tag is `//!`, you can change it this way:
+#### Handler example
 ```javascript
-var actionComment = require("action-comment")({"tag" : "#&!@"})
+function handler(content, line, position){
+    return line
+}
+
+async function handlerPromise(content, line, position){
+    return line
+}
 ```
+
+## CLI
+```bash
+actioncomment [target: path] --handler [path] --output [path] --tag [string] 
+```
+ - target: Target file
+ - output: File that will be created, if nothing happens, exit stdout.
+ - handler: Nodejs module with handlers
+ - tag: Comment tag
