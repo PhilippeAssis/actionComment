@@ -71,7 +71,7 @@ async function handlerPromise(content, line, position){
 
 ## CLI
 ```bash
-actioncomment [target: path] --handler [path] --output [path] --tag [string] 
+action-comment [target: path] --handler [path] --output [path] --tag [string] 
 ```
  - target: Target file
  - output: File that will be created, if nothing happens, exit stdout.
